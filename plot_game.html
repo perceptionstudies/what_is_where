@@ -1,0 +1,738 @@
+<!-- Original script created by Tal Boger, July 2021 -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<head>
+  <title>What is "where" demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" href="logo.svg">
+
+</head>
+<div id="experiment">
+  <p id="title"><strong>Where is the object?</strong></p>
+  <p id="browserCompat"><strong>Unfortunately, this study does not work in your current browser. Please use Chrome, Firefox, or Safari. Sorry!</strong></p>
+ 	<span id="instructions">
+    <p>This webpage presents an interactive demo of experiments and data for:</p>
+    <p><center>Boger, T. and Ullman, T. D. (2023).<br>What is "where": Physical reasoning informs object location.<br><i>Open Mind</i>, <i>7</i>, 130-140.</center></p>
+    <p>A guide page containing the rest of our experiments as done by our participants, a link to our OSF repository, and a link to our pre-print are available <strong><a href="https://perceptionstudies.github.io/what_is_where/">here</a></strong>.</p>
+    <p>Here, you can chose which stimuli type you'd like on each trial (or be given a random image), and then click on "where" you think the object is. After you click on an obejct, an image will appear showing where our participants clicked.</p>
+    <p>Note that the masked objects here have names corresponding to the line drawings from which they are generated, but for participants, the masked objects were given abstract names to remove any semantic content.</p>
+  </span>
+  <span id="startInstructions">
+    <p><strong>Your task</strong>: pretend your friend just asked you "where is the object?", and you respond by pointing to it. Please use your mouse to indicate where you would point to.</p>
+    <br>
+    <br>
+    <br>
+    <a href='javascript:StartExperiment()' id='startExperiment'>Start</a>
+  </span>
+
+  <img id="marker" src="stimuli/marker_x.png" width=15; height=15; style="display: none; position: absolute; z-index: 2;">
+
+  <br>
+
+  <div id="stimSelection">
+    <p style="text-align:center">Click below to try a random object.</p>
+    <a href='javascript:assignRandom()' id='startExperiment'>Random object!</a>
+    <br><br>
+    <p style="text-align:center">Want to see a specific object in a specific form? Use the down-down menus below to select it.</p>
+    <label for="stim_type" style="display: block; text-align:center">Which type of stimuli realism would you like to see?</label>
+     <select name="stim_type" id="stim_type" style="display: block; margin: 0 auto">
+       <option value="line_drawings">Line drawings</option>
+       <option value="real_objects">Real objects</option>
+       <option value="masked_objects">Masked objects</option>
+     </select>
+     <br>
+     <br>
+     <label for="object_choice" style="display: block; text-align:center">Which object would you like to see?</label>
+      <select name="object_choice" id="object_choice" style="display: block; margin: 0 auto">
+      </select>
+    <br>
+    <br>
+    <a href='javascript:loadTrial()' id='startExperiment'>Specific object!</a>
+  </div>
+  <div id="trialInstructions">
+    <p style="text-align:center">Your friend asks: "where is the object?". Click on where you would point to.</p>
+  </div>
+  <br>
+  <br>
+  <div class="img-container">
+    <img id="imageReal" src="" height=500 width=500 class="bottom">
+    <img id="clicksImage" src="" height=500 width=500 class="top" style="opacity:0; filter:alpha(opacity=40)">
+  </div>
+<br>
+  <a href='javascript:selectStim()' id='selectNext' class='button'>Back to selection page</a>
+  <br>
+  <a href='javascript:selectStimRandom()' id='selectNextRandom' class='button'>Give me another random object!</a>
+
+
+</div>
+
+<div id="questionText">
+  <strong>Please answer the following questions.</strong>
+  <p style="text-align:center">In this task, did you see any pictures of gorillas or fish?</p>
+  <input type="radio" name="saw_gorillas" value="yes" onclick = "checkDemoAnswers()" style="display: inline-block;vertical-align: baseline;"> Yes</input>
+  &nbsp; &nbsp;
+  <input type="radio" name="saw_gorillas" value="yes" onclick = "checkDemoAnswers()" style="display: inline-block;vertical-align: baseline;"> No</input>
+  <br>
+  <p style="text-align:center">Please describe the task you had to complete in this study</p>
+  <textarea id="taskGuess" rows=4 cols=40 placeholder="Enter your amswer here..."></textarea>
+	<input type="hidden" id="taskGuess" name="taskGuess">
+  <br>
+  <p style="text-align:center">If you had to guess, what do you think was the purpose of this study?</p>
+  <textarea id="purposeGuess" rows=4 cols=40 placeholder="Enter your answer here..."></textarea>
+	<input type="hidden" id="purposeGuess" name="purposeGuess">
+  <br>
+  <p style="text-align:center">What is 1 + 1?</p>
+  <textarea id="sumCheck" rows=1 cols=20 placeholder="Enter your answer here..."></textarea>
+  <br>
+  <br>
+  <a href='javascript:doneExperiment()' id='doneExperiment' class='button'>Next</a>
+</div>
+
+<div id="doneText">
+	<strong>This is the last page of the study. Do not close your browser! You will be able to submit your results and be redirected to Prolific at the end of this page.</strong>
+  <p style="text-align:center">The following is a voluntary questionnaire.
+     You can choose to answer any, all, or none of the questions below.
+     Your participation in the research study does not depend on filling out any of the data below.
+     The form does not include any personal identifying information and is given to you so that we can assess the representativeness of the population of people in our studies.</p>
+	<br>
+  <p>You can also feel free to leave any comments below about how the experiment went, but that's up to you. Did everything seem to work OK?</p>
+	<textarea id="commentBox" rows=4 cols=40 placeholder="Enter your comments here..."></textarea>
+	<input type="hidden" id="comments" name="comments">
+  <br>
+  <br>
+  <br>
+  <a href='javascript:submitData()' id='submitDataButton' class='button'>Submit results</a>
+  <br>
+  <span id="redirectToProlific">
+    <p>Your browser should automatically redirect you to Prolific's webpage where you will be given a completion code.</p>
+    <p>Redirecting in <span id = countDown><b></b></span> seconds.</p>
+    <p>If you're not automatically redirected in a few seconds, please copy and paste this address on your web browser:
+    <b><span id = urlProlific></span></b></p>
+  </span>
+</div>
+
+<script>
+$(document).ready(introRoutines);
+
+// hide all things aside from instructions
+$('#marker').hide();
+$('#stimSelection').hide();
+$('#trialInstructions').hide();
+$('#imageReal').hide();
+$('#clicksImage').hide();
+$('#selectNext').hide();
+$("#selectNextRandom").hide();
+$('#redirectToProlific').hide();
+
+var requestAnimationFrame = window.requestAnimationFrame ||
+                            window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.msRequestAnimationFrame;
+
+// experiment params
+var experimentName = 'what_is_where';
+var experimentVersion = 'game_plots';
+
+// timing params
+var itiTime = 1000; // 1000 ms between trials REMOVE THIS
+
+// various global vars
+var currentTrialNum;
+var trial;
+var subjectID, studyID, sessionID;
+var responses = {};
+var video, source;
+var startHITTime;
+var video, source;
+var startExperimentTime;
+var t0_respond;
+var answeredCatch = false;
+var answeredSum = false;
+var answeredTask = false;
+var answeredPurpose = false;
+
+// define nTrials
+var nTrials = 50;
+
+// define images
+
+var images = ["apple", "backpack", "bananas", "basketball", "bell", "bicycle",
+              "bird", "car", "chainsaw", "chair", "clock", "comb", "curtains",
+              "dart", "dog", "drill", "fan", "fire_extinguisher", "fish",
+              "flower", "fork", "glasses", "gorilla", "grapes", "hand",
+              "hanger", "headphones", "high_heel", "horseshoe", "hose", "key",
+              "lamp", "monitor", "mug", "paint_roller", "pan", "phone",
+              "pineapple", "pipe", "rocket", "scooter", "shoe", "shower",
+              "tooth", "toothbrush", "tractor", "tree", "umbrella",
+              "violin", "wine_bottle"];
+
+var select = document.getElementById("object_choice");
+for(index in images) {
+    select.options[select.options.length] = new Option(images[index], images[index]);
+}
+
+// get browser params, tell user browser is not compatible if needed
+var browserInfo = getBrowser();
+if (browserInfo['name'] == "msie" || browserInfo['name'] == "Opera") {
+  $('#browserCompat').show();
+} else {
+  $('#browserCompat').hide();
+}
+
+// redirect params
+var urlProlific = "https://app.prolific.co/"; // THIS HAS BEEN REPLACED FOR ANONYMIZATION PURPOSES
+var finalCountDownClock = 5;
+
+// when the document has loaded
+function introRoutines() {
+  [subjectID, studyID, sessionID] = getProlificInfo();
+
+  currentTrialNum = -1;
+
+  // gen trials
+  trials = generateTrials();
+  responses['trialData'] = [];
+
+  startHITTime = currentTime();
+
+}
+
+function getProlificInfo() {
+  let urlParams = new URLSearchParams(window.location.search);
+  prolificPID = urlParams.get("PROLIFIC_PID");
+  studyID = urlParams.get("STUDY_ID");
+  sessionID = urlParams.get("SESSION_ID");
+  return [prolificPID, studyID, sessionID]
+}
+
+
+function generateTrials() {
+  trials = [];
+  imageSeq = shuffle(images);
+  for (i = 0; i < nTrials; i++) {
+    var trial = {};
+    trial.image = imageSeq[i];
+    trials.push(trial);
+  }
+  return trials;
+
+}
+
+function StartExperiment() {
+  $('#instructions').hide();
+  $('#startInstructions').hide();
+  $('#marker').hide();
+  startedExperiment = true;
+  startExperimentTime = new Date();
+  $('#progressContainer').show();
+  $('.progress').show();
+  selectStim();
+
+}
+
+function selectStim() {
+  $('#imageReal').attr('src', []);
+  $('#clicksImage').attr('src', []);
+  $('#marker').hide();
+  $('#trialInstructions').hide();
+  $('#imageReal').hide();
+  $('#clicksImage').hide();
+  $("#selectNext").hide();
+  $("#selectNextRandom").hide();
+  $('#stimSelection').show();
+}
+
+function selectStimRandom() {
+  $('#imageReal').attr('src', []);
+  $('#clicksImage').attr('src', []);
+  $('#marker').hide();
+  $('#trialInstructions').hide();
+  $('#imageReal').hide();
+  $('#clicksImage').hide();
+  $("#selectNext").hide();
+  $("#selectNextRandom").hide();
+  $('#stimSelection').show();
+  assignRandom()
+}
+
+function assignRandom() {
+  var randObject = images[Math.floor(Math.random()*images.length)];
+  var stimOptions = ['line_drawings', 'real_objects', 'masked_objects'];
+  var randStim = stimOptions[Math.floor(Math.random()*stimOptions.length)];
+
+  $("#stim_type").val(randStim);
+  $('#object_choice').val(randObject);
+  loadTrial();
+
+}
+
+function loadTrial() {
+  currentTrialNum = 0;
+  if (currentTrialNum < nTrials) {
+    trial = trials[currentTrialNum];
+    trial['trialID'] = currentTrialNum;
+    runTrial();
+  } else {
+    showQuestion();
+  }
+
+}
+
+function runTrial() {
+
+  $('#trialInstructions').show();
+  trial.image = $("#object_choice").val();
+  trial.stimtype = $('#stim_type').val();
+  $('#stimSelection').hide();
+
+  var currImage = new Image();
+  currImage.src = 'stimuli/' + trial.stimtype + '/' + trial.image + '.png';
+  currImage.onload = function() {
+  };
+
+  if (trial.image.includes("_")) {
+    $('#trialInstructions > p').html('<p style="text-align:center">Your friend asks: "where is the ' + trial.image.replaceAll('_', ' ') + '?". Click on where you would point to.<br>(After you click, we\'ll show you what other people guessed in blue.)</p>');
+  } else if (trial.image.endsWith("s")) {
+    $('#trialInstructions > p').html('<p style="text-align:center">Your friend asks: "where are the ' + trial.image + '?". Click on where you would point to.<br>(After you click, we\'ll show you what other people guessed in blue.)</p>');
+  } else {
+    $('#trialInstructions > p').html('<p style="text-align:center">Your friend asks: "where is the ' + trial.image + '?". Click on where you would point to.<br>(After you click, we\'ll show you what other people guessed in blue.)</p>');
+  }
+
+  $('#imageReal').attr('src', currImage.src);
+  $('#imageReal').show();
+
+  var currImageClicks = new Image();
+  currImageClicks.src = 'where_plots/' + trial.stimtype + '/' + trial.image + '.png';
+  currImageClicks.onload = function() {
+  };
+  $('#clicksImage').attr('src', currImageClicks.src);
+
+
+  t0_respond = currentTime();
+
+  fired = false;
+  $("#imageReal").on("click", function(event) {
+    if(!fired){
+       bounds=this.getBoundingClientRect();
+       var left=bounds.left;
+       var top=bounds.top;
+       var x = event.pageX - left - window.scrollX;
+       var y = event.pageY - top - window.scrollY;
+       var cw=this.clientWidth;
+       var ch=this.clientHeight;
+       var iw=this.naturalWidth;
+       var ih=this.naturalHeight;
+       trial.px=x/cw*iw;
+       trial.py=y/ch*ih;
+       fired=true;
+
+       $('#marker').css('left', event.pageX).css('top', event.pageY).show();
+
+       setTimeout(fadeClicks, itiTime);
+     }
+   });
+}
+
+function fadeIn(el) {
+    el.style.opacity = 0;
+    var tick = function () {
+        el.style.opacity = +el.style.opacity + 0.01;
+        if (+el.style.opacity < 1) {
+            (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16)
+        }
+    };
+    tick();
+}
+
+function fadeClicks() {
+  $('#clicksImage').show();
+  var el = document.getElementById("clicksImage");
+  fadeIn(el);
+  setTimeout(function() {
+
+    $('#selectNext').show();
+    $('#selectNextRandom').show();
+  }, 1600)
+}
+
+function respond() {
+  $('#marker').hide();
+  var rt = currentTime() - t0_respond;
+
+  trial['rt'] = Math.round(rt * 10) / 10;
+  trial['subjectID'] = subjectID;
+  responses['trialData'].push(trial);
+
+  $('#trialInstructions').hide();
+  $('#imageReal').hide();
+
+  setTimeout(loadTrial, itiTime);
+
+}
+
+function checkDemoAnswers() {
+  if($('input[type=radio]:checked').length == 2) {
+    answeredCatch = true;
+  }
+
+  if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+    $('#doneExperiment').show();
+  }
+}
+
+function showQuestion() {
+  $('#experiment').hide();
+  $('#doneExperiment').hide();
+  $('#questionText').show();
+
+  document.getElementById('sumCheck').addEventListener('input', function() {
+    var text = this.value;
+
+    if (text == 2) {
+        answeredSum = true;
+    }
+
+    if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+      $('#doneExperiment').show();
+    }
+  });
+
+  document.getElementById('purposeGuess').addEventListener('input', function() {
+    var text = this.value;
+
+    if (text.length >= 1) {
+      answeredPurpose = true;
+    }
+    if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+      $('#doneExperiment').show();
+    }
+  });
+
+  document.getElementById('taskGuess').addEventListener('input', function() {
+    var text = this.value;
+
+    if (text.length >= 1) {
+      answeredTask = true;
+    }
+    if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+      $('#doneExperiment').show();
+    }
+  });
+
+}
+
+function doneExperiment() {
+  $('#questionText').hide();
+	$('#doneText').show();
+  $('#submitButton').show();
+	$("#submitButton").css('visibility','visible');
+  $('.progress').hide();
+	$('#commentBox').show();
+
+  assignExperimentInfo();
+
+}
+
+function assignExperimentInfo() {
+  responses['experimentName'] = experimentName;
+  responses['experimentVersion'] = experimentVersion;
+  responses['experimentTime'] = Math.round((currentTime() - startHITTime) * 10) / 10;
+
+  responses['studyID'] = studyID;
+  responses['sessionID'] = sessionID;
+
+  responses['browserName'] = browserInfo['name'];
+  responses['browserVersion'] = browserInfo['version'];
+  responses['displayWindowHeight'] = $(window).height();
+  responses['displayWindowWidth'] = $(window).width();
+  responses['displayScreenHeight'] = screen.height;
+  responses['displayScreenWidth'] = screen.width;
+
+  responses['saw_gorillas'] = document.querySelector('input[name="saw_gorillas"]:checked').value;
+
+}
+
+function submitData() {
+  responses['purposeGuess'] = document.getElementById('purposeGuess').value;
+  responses['taskGuess'] = document.getElementById('taskGuess').value;
+  responses['commentText'] = document.getElementById('commentBox').value;
+  responses['totalTime'] = Math.round((currentTime() - startHITTime) * 10) / 10;
+  // get data string from response array
+  var dataString = JSON.stringify(responses);
+
+  // post response to server
+
+  $.post("record_data.php",
+         {dataString : dataString, subjectID: subjectID});
+
+
+  $('#redirectToProlific').show();
+  $('#urlProlific').text(urlProlific);
+  $('#countDown').text((finalCountDownClock).toString());
+  redirectTimer = setInterval(countDown, 1000);
+}
+
+function currentTime() {
+  return performance.now();
+
+}
+
+// pads numbers with leading 0s for filenames
+function pad(n) {
+  n = n + '';
+  return n.length >= 4 ? n : new Array(4 - n.length + 1).join(0) + n;
+
+}
+
+function getBrowser() {
+  var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+  if(/trident/i.test(M[1])) {
+    tem=/\brv[ :]+(\d+)/g.exec(ua) || [];
+    return {name:'IE',version:(tem[1]||'')};
+    }
+  if(M[1]==='Chrome') {
+    tem=ua.match(/\bOPR|Edge\/(\d+)/)
+    if(tem!=null) {
+      return {name:'Opera', version:tem[1]};
+      }
+    }
+  M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+  if((tem=ua.match(/version\/(\d+)/i))!=null) {
+    M.splice(1,1,tem[1]);
+  }
+  return {
+    name: M[0],
+    version: M[1]
+  };
+
+}
+
+// randomly shuffle elements of array
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+
+}
+
+function countDown () {
+  finalCountDownClock--;
+  if (finalCountDownClock == 0) {
+    clearInterval(redirectTimer);
+    window.location = urlProlific;
+  } else {
+    $('#countDown').text((finalCountDownClock).toString());
+  }
+}
+
+// get random integer
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// pad numbers
+function pad(n, width=2) {
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join("0") + n;
+}
+
+</script>
+
+<style>
+body {
+  font-family: Helvetica,Arial;
+  font-size: 14pt;
+  height: 100%;
+  margin: 10 auto;
+}
+
+#instructions,#startInstructions {
+	display:block;
+	max-width: 80%;
+	margin: 0 auto;
+	margin-top: 0px;
+  text-align: left;
+}
+
+#trialInstructions, stimSelection {
+	display:block;
+	max-width: 80%;
+	margin: 0 auto;
+	margin-top: 0px;
+  text-align: left;
+  margin-bottom: -1.2em;
+}
+
+#title, #browserCompat {
+  font-size: 18pt;
+  text-align: center;
+  margin: 0 auto;
+}
+canvas {
+  border: 1px solid black;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+input {
+  position: relative;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#startExperiment, #playButton, #purposeButton, #submitDataButton, #doneExperiment,#selectNext, #selectNextRandom, #consentButton {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+	color: black;
+	font-size:14pt;
+	border: 3px outset gray;
+	background-color: #4CAF50;
+	padding: 0px;
+	text-decoration: none;
+	font-weight: bold;
+  position: relative;
+  width: 150px;
+	margin-top:0px;
+	margin-bottom:0px;
+  border-radius: 8px;
+  transition-duration: 0.4s;
+}
+
+#startExperiment:hover, #revealImage:hover, #purposeButton:hover, #submitDataButton:hover, #doneExperiment:hover, #selectNext:hover, #selectNextRandom:hover, #consentButton:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+#startExperiment:active, #revealImage:active, #purposeButton:active, #submitDataButton:active, #doneExperiment:active, #selectNext:active, #selectNextRandom:active, #consentButton:active {
+	background: gray;
+}
+
+.progress {
+  text-align: center;
+  display: none;
+  height: 15px;
+}
+
+#progressContainer {
+  text-align: center;
+  display: none;
+}
+
+#progressText {
+  font-size: 14pt;
+  color: black;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#progressOutline {
+  display: inline-block;
+  background: white;
+  border: 3px solid black;
+  width: 100px;
+  margin: 5 auto;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+#progressBar {
+  background: #4CAF50;
+  width: 0px;
+  margin-bottom: 10px;
+}
+
+
+#container1 {
+  position: absolute;
+  left: 20%;
+  top: 150px;
+  transform: translate(-20%, 150px);
+  margin: auto;
+  color: black;
+  text-align: center;
+}
+
+#container2 {
+  position: absolute;
+  left: 80%;
+  top: 150px;
+  transform: translate(-80%, 150px);
+  margin: auto;
+  color: black;
+  text-align: center;
+}
+
+#doneText, #questionText, #getDemos {
+	display:none;
+	max-width: 500px;
+	text-align:center;
+	margin: 10 auto;
+	padding-bottom:10px;
+	font-size:14pt
+}
+
+#doneText p, #questiontext p, #getDemos p {
+	font-size:12pt
+}
+
+.doneTextStyle, .questionTextStyle, .getDeosStyle {
+  display: none;
+}
+
+#commentBox {
+	display:none;
+}
+
+#submitButton {
+	display:block;
+  width: 100%;
+  margin-top: 500px;
+  margin-bottom: 50px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+img {
+    max-width: 500px;
+    height: auto;
+}
+
+.img-container {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+ }
+
+ .img-container .top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#button1{
+    width: 300px;
+    height: 40px;
+}
+#button2{
+    width: 300px;
+    height: 40px;
+}
+
+
+
+</style>

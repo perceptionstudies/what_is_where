@@ -1,0 +1,792 @@
+<!-- Original script created by Tal Boger, July 2021 -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div id="consentForm">
+  <p id="title"><strong>CONSENT FORM</strong></p>
+  <span id="consentInstructions">
+  <p><strong>LABORATORY FOR COMPUTATION COGNITION & DEVELOPMENT</strong></p>
+  <p><strong>Department of Psychology</strong></p>
+  <p><strong>Harvard University</strong></p>
+
+  <p>Dear participants,</p>
+  <p>Thank you for your interest in our study. In this study, you will:</p>
+  <ul>
+    <li>See images of 50 things.</li>
+    <li>For each image, you will click where on the image you think the object is, as if you had to point to it with your finger in a specific location to show a friend.</li>
+    <li>At the end of the study, you will answer a few simple demographic questions.</li>
+  </ul>
+  <p>The study is expected to take about 5 minutes in total.</p>
+  <p>You are being asked to participate in a project being conducted by a research team at Harvard University, under the direction of Dr. Tomer Ullman.
+     We are interested in how people are able to reason quickly and in a commonsense way about the different objects and people they encounter in the world around them.</p>
+
+  <p>The study will last around 5 minutes. Your participation in this study is completely voluntary.
+     You may refuse to participate, or you may choose to withdraw from participation at any time, without penalty or loss of benefit to which you are otherwise entitled.
+     There has been no harm to people involved in this study and there are no risks associated with participation.</p>
+
+  <p>All information collected from the study will be associated with a Prolific Subject ID, which is the only identifying data you are providing.
+     Only researchers associated with this project will have access to the data.
+     In order to make a research transparent to the scientific and broader community our study design and unidentifiable data are made publicly available on Open Science Framework,
+     a network of research materials and collaboration software, but your data will not be in anyway identifiable.</p>
+
+  <p>We will also provide you with a demographic questionnaire. The form does not include any personal identifying information other than your Prolific Subject ID.
+     Your contribution to this questionnaire is voluntary; if you choose to provide the requested information, your responses will be confidential.
+     You will be reimbursed at a rate of $10/hour for your participation.</p>
+
+  <p>Your participation in our study would be greatly appreciated.
+    If you have any questions about the project please feel free to contact us at the Lab for Computation, Cognition, and Development at the Department of Psychology, 33 Kirkland Street, Cambridge, MA 02138, or via email at cocodev@g.harvard.edu.
+    You may also contact the faculty member supervising this work: Tomer Ullman, Assistant Professor of Psychology, 1320 William James Hall, 33 Kirkland Street, Cambridge, MA, 02138, email: tullman@fas.harvard.edu</p>
+
+  <p>Whom to contact about your rights in this research, for questions, concerns, suggestions, or complaints that are not being addressed by the researcher, or research-related harm:
+    Committee on the Use of Human Subjects in Research at Harvard University. Phone: 617-496-CUHS (2847). Email: cuhs@harvard.edu. Please print this screen for your records.</p>
+
+  <p><strong>CONSENT STATEMENT:</strong></p>
+
+  <p>If you agree to participate, please click the "Consent" button below. Thank you very much for your time and consideration.</p>
+
+  <p>By selecting the "Consent" button below, I acknowledge that I am 18 or older, have read this consent form,
+    and I agree to take part in the Commonsense Reasoning about Physics and Psychology project conducted by the research lab of Dr. Tomer Ullman.</p>
+
+  <p>If you do NOT agree to participate in this study, please click the "Decline" button below.</p>
+
+  <input type="radio" name="consent_key" value="consent" onclick = "checkConsent()" style="display: inline-block;vertical-align: baseline;"> Consent</input>
+  &nbsp; &nbsp;
+  <input type="radio" name="consent_key" value="decline" onclick = "checkConsent()" style="display: inline-block;vertical-align: baseline;"> Decline</input>
+
+  <br>
+  <p id="consent_accepted">Thank you for giving your consent. Press the button below to proceed.</p>
+  <p id="consent_declined">You have declined consent. You may close the experiment.</p>
+  <br>
+
+  <a href='javascript:consentButton()' id='consentButton'>Proceed</a>
+  </span>
+
+  <br>
+  <br>
+</div>
+
+<div id="experiment">
+  <p id="title"><strong>Where is the object?</strong></p>
+  <p id="browserCompat"><strong>Unfortunately, this study does not work in your current browser. Please use Chrome, Firefox, or Safari. Sorry!</strong></p>
+ 	<span id="instructions">
+    <p>In this experiment, you will see 50 images one after another.</p>
+  </span>
+  <span id="startInstructions">
+    <p><strong>Your task</strong>: pretend your friend just asked you "where is the object?", and you respond by pointing to it. Please use your mouse to indicate where you would point to.</p>
+    <p>At the end of the study, we will ask for some optional demographic information.</p>
+    <p style="font-size:10pt">(NOTE: When the experiment is done, a submit button should appear. To complete the study, please click the button.)</p>
+    <br>
+    <br>
+    <a href='javascript:runTest()' id='runTest'>Proceed</a>
+  </span>
+
+  <div id="testInstructions">
+    <p>First, you will see an example trial to be sure you can click on the images.</p>
+    <p>In the example below, where is the <strong>red square</strong>? Click where you think it is with your mouse.</p>
+    <br>
+  </div>
+
+  <div id="testTrial">
+    <br>
+    <img id="imageTest" src="test_trial.png" height=500 width=500 class="center">
+    <br>
+
+    <p style="text-align:center" id="incorrect">Unfortunately, your response is incorrect. Please try again.</p>
+  </div>
+
+  <img id="marker" src="stimuli/marker_x.png" width=15; height=15; style="display: none; position: absolute; z-index: 2;">
+
+  <br>
+  <div id="correctTestAnswer">
+    <p style="text-align:center">Correct! Press the button below to start the real experiment!</p>
+    <a href='javascript:StartExperiment()' id='startExperiment'>Start Experiment</a>
+  </div>
+
+  <div id="progressContainer">
+    <div class="progress" id="progressText">Study Progress</div>
+      <div class="progress" id="progressOutline">
+      <div class="progress" id="progressBar"></div>
+    </div>
+  </div>
+  <div id="trialInstructions">
+    <p style="text-align:center">Your friend asks: "where is the object?". Click on where you would point to.</p>
+  </div>
+  <br>
+  <br>
+  <img id="imageReal" src="" height=500 width=500 class="center">
+
+</div>
+
+<div id="questionText">
+  <strong>Please answer the following questions.</strong>
+  <p style="text-align:center">In this task, did you see any pictures of gorillas or fish?</p>
+  <input type="radio" name="saw_gorillas" value="yes" onclick = "checkDemoAnswers()" style="display: inline-block;vertical-align: baseline;"> Yes</input>
+  &nbsp; &nbsp;
+  <input type="radio" name="saw_gorillas" value="yes" onclick = "checkDemoAnswers()" style="display: inline-block;vertical-align: baseline;"> No</input>
+  <br>
+  <p style="text-align:center">Please describe the task you had to complete in this study</p>
+  <textarea id="taskGuess" rows=4 cols=40 placeholder="Enter your amswer here..."></textarea>
+	<input type="hidden" id="taskGuess" name="taskGuess">
+  <br>
+  <p style="text-align:center">If you had to guess, what do you think was the purpose of this study?</p>
+  <textarea id="purposeGuess" rows=4 cols=40 placeholder="Enter your answer here..."></textarea>
+	<input type="hidden" id="purposeGuess" name="purposeGuess">
+  <br>
+  <p style="text-align:center">What is 1 + 1?</p>
+  <textarea id="sumCheck" rows=1 cols=20 placeholder="Enter your answer here..."></textarea>
+  <br>
+  <br>
+  <a href='javascript:doneExperiment()' id='doneExperiment' class='button'>Next</a>
+</div>
+
+<div id="doneText">
+	<strong>This is the last page of the study. Do not close your browser! You will be able to submit your results and be redirected to Prolific at the end of this page.</strong>
+  <p style="text-align:center">The following is a voluntary questionnaire.
+     You can choose to answer any, all, or none of the questions below.
+     Your participation in the research study does not depend on filling out any of the data below.
+     The form does not include any personal identifying information and is given to you so that we can assess the representativeness of the population of people in our studies.</p>
+	<br>
+  <p>You can also feel free to leave any comments below about how the experiment went, but that's up to you. Did everything seem to work OK?</p>
+	<textarea id="commentBox" rows=4 cols=40 placeholder="Enter your comments here..."></textarea>
+	<input type="hidden" id="comments" name="comments">
+  <br>
+  <br>
+  <br>
+  <a href='javascript:submitData()' id='submitDataButton' class='button'>Submit results</a>
+  <br>
+  <span id="redirectToProlific">
+    <p>Your browser should automatically redirect you to Prolific's webpage where you will be given a completion code.</p>
+    <p>Redirecting in <span id = countDown><b></b></span> seconds.</p>
+    <p>If you're not automatically redirected in a few seconds, please copy and paste this address on your web browser:
+    <b><span id = urlProlific></span></b></p>
+  </span>
+</div>
+
+<script>
+$(document).ready(introRoutines);
+
+// hide all things aside from instructions
+$('#consent_accepted').hide();
+$('#consent_declined').hide();
+$('#consentButton').hide();
+$('#experiment').hide();
+$('#testTrial').hide();
+$('#marker').hide();
+$('#incorrect').hide();
+$('#correctTestAnswer').hide();
+$('#container_video').hide();
+$('#testInstructions').hide();
+$('#trialInstructions').hide();
+$('#imageReal').hide();
+$('#redirectToProlific').hide();
+
+var requestAnimationFrame = window.requestAnimationFrame ||
+                            window.mozRequestAnimationFrame ||
+                            window.webkitRequestAnimationFrame ||
+                            window.msRequestAnimationFrame;
+
+// experiment params
+var experimentName = 'what_is_where';
+var experimentVersion = 'e1_where';
+
+// timing params
+var itiTime = 1000; // 1000 ms between trials
+
+// object for preloading images
+var allImages = [];
+
+// various global vars
+var currentTrialNum;
+var trial;
+var subjectID, studyID, sessionID;
+var responses = {};
+var video, source;
+var startHITTime;
+var video, source;
+var startExperimentTime;
+var t0_respond;
+var answeredCatch = false;
+var answeredSum = false;
+var answeredTask = false;
+var answeredPurpose = false;
+
+// define nTrials
+var nTrials = 50;
+
+// define images
+
+var images = ["apple", "backpack", "bananas", "basketball", "bell", "bicycle",
+              "bird", "car", "chainsaw", "chair", "clock", "comb", "curtains",
+              "dart", "dog", "drill", "fan", "fire_extinguisher", "fish",
+              "flower", "fork", "glasses", "gorilla", "grapes", "hand",
+              "hanger", "headphones", "high_heel", "horseshoe", "hose", "key",
+              "lamp", "monitor", "mug", "paint_roller", "pan", "phone",
+              "pineapple", "pipe", "rocket", "scooter", "shoe", "shower",
+              "tooth", "toothbrush", "tractor", "tree", "umbrella",
+              "violin", "wine_bottle"]
+
+// get browser params, tell user browser is not compatible if needed
+var browserInfo = getBrowser();
+if (browserInfo['name'] == "msie" || browserInfo['name'] == "Opera") {
+  $('#browserCompat').show();
+} else {
+  $('#browserCompat').hide();
+}
+
+// redirect params
+var urlProlific = "https://app.prolific.co/"; // THIS HAS BEEN REPLACED FOR ANONYMIZATION PURPOSES
+var finalCountDownClock = 5;
+
+function checkConsent() {
+  if (document.querySelector('input[name="consent_key"]:checked').value == "consent") {
+    $('#consent_declined').hide();
+    $('#consent_accepted').show();
+    $('#consentButton').show();
+  } else if (document.querySelector('input[name="consent_key"]:checked').value == "decline") {
+    $('#consent_declined').show();
+    $('#consent_accepted').hide();
+    $('#consentButton').hide();
+  }
+}
+
+function consentButton() {
+  $('#consentForm').hide();
+  $('#experiment').show();
+  $('#experiment > p:first').html("<strong>INSTRUCTIONS, PLEASE READ CAREFULLY</strong>");
+
+}
+
+// functions for test trial before experiment begins
+function runTest() {
+  $('#startInstructions').hide();
+  $('#instructions').hide();
+  $('#testInstructions').show();
+
+  showTest();
+
+}
+
+function showTest() {
+  $('#testTrial').show();
+  $("#imageTest").on("click", function(event) {
+       bounds=this.getBoundingClientRect();
+       var left=bounds.left;
+       var top=bounds.top;
+       var x = event.pageX - left - window.scrollX;
+       var y = event.pageY - top - window.scrollY;
+       var cw=this.clientWidth;
+       var ch=this.clientHeight;
+       var iw=this.naturalWidth;
+       var ih=this.naturalHeight;
+       var px=x/cw*iw;
+       var py=y/ch*ih;
+
+       $('#marker').css('left', event.pageX).css('top', event.pageY).show();
+
+       if (px <= 250) {
+         $('#correctTestAnswer').show();
+         $('#incorrect').hide();
+       } else {
+         $('#incorrect').show();
+       }
+   });
+}
+
+// when the document has loaded
+function introRoutines() {
+  [subjectID, studyID, sessionID] = getProlificInfo();
+
+  currentTrialNum = -1;
+
+  // gen trials
+  trials = generateTrials();
+  responses['trialData'] = [];
+
+  startHITTime = currentTime();
+
+  preload(0);
+}
+
+function getProlificInfo() {
+  let urlParams = new URLSearchParams(window.location.search);
+  prolificPID = urlParams.get("PROLIFIC_PID");
+  studyID = urlParams.get("STUDY_ID");
+  sessionID = urlParams.get("SESSION_ID");
+  return [prolificPID, studyID, sessionID]
+}
+
+
+function generateTrials() {
+  trials = [];
+  imageSeq = shuffle(images);
+  for (i = 0; i < nTrials; i++) {
+    var trial = {};
+    trial.image = imageSeq[i];
+    trials.push(trial);
+  }
+  return trials;
+
+}
+
+function StartExperiment() {
+  $('#correctTestAnswer').hide();
+  $('#testTrial').hide();
+  $('#testInstructions').hide();
+  $('#marker').hide();
+  startedExperiment = true;
+  startExperimentTime = new Date();
+  $('#progressContainer').show();
+  $('.progress').show();
+  loadTrial();
+
+}
+
+function loadTrial() {
+  $('#experiment > p:first').html("")
+  currentTrialNum++;
+  if (currentTrialNum < nTrials) {
+    trial = trials[currentTrialNum];
+    trial['trialID'] = currentTrialNum;
+    runTrial();
+  } else {
+    showQuestion();
+  }
+
+}
+
+function runTrial() {
+  $('#progressBar').css('width',((currentTrialNum/nTrials)*100) + 'px');
+  $('#trialInstructions').show();
+
+  if (trial.image.includes("_")) {
+    $('#trialInstructions > p').html('<p style="text-align:center">Your friend asks: "where is the ' + trial.image.replaceAll('_', ' ') + '?". Click on where you would point to.</p>');
+  } else if (trial.image.endsWith("s")) {
+    $('#trialInstructions > p').html('<p style="text-align:center">Your friend asks: "where are the ' + trial.image + '?". Click on where you would point to.</p>');
+  } else {
+    $('#trialInstructions > p').html('<p style="text-align:center">Your friend asks: "where is the ' + trial.image + '?". Click on where you would point to.</p>');
+  }
+
+  $('#imageReal').attr('src', allImages[currentTrialNum].src);
+  $('#imageReal').show();
+  t0_respond = currentTime();
+
+  fired = false;
+  $("#imageReal").on("click", function(event) {
+    if(!fired){
+       bounds=this.getBoundingClientRect();
+       var left=bounds.left;
+       var top=bounds.top;
+       var x = event.pageX - left - window.scrollX;
+       var y = event.pageY - top - window.scrollY;
+       var cw=this.clientWidth;
+       var ch=this.clientHeight;
+       var iw=this.naturalWidth;
+       var ih=this.naturalHeight;
+       trial.px=x/cw*iw;
+       trial.py=y/ch*ih;
+       fired=true;
+
+       $('#marker').css('left', event.pageX).css('top', event.pageY).show();
+
+       setTimeout(respond, itiTime);
+     }
+   });
+}
+function respond() {
+  $('#marker').hide();
+  var rt = currentTime() - t0_respond;
+
+  trial['rt'] = Math.round(rt * 10) / 10;
+  trial['subjectID'] = subjectID;
+  responses['trialData'].push(trial);
+
+  $('#trialInstructions').hide();
+  $('#imageReal').hide();
+  if (trial['trialID'] < nTrials - 1) {
+    preload(trial['trialID'] + 1); // preload next trial
+  }
+  setTimeout(loadTrial, itiTime);
+
+}
+
+function checkDemoAnswers() {
+  if($('input[type=radio]:checked').length == 2) {
+    answeredCatch = true;
+  }
+
+  if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+    $('#doneExperiment').show();
+  }
+}
+
+function showQuestion() {
+  $('#experiment').hide();
+  $('#doneExperiment').hide();
+  $('#questionText').show();
+
+  document.getElementById('sumCheck').addEventListener('input', function() {
+    var text = this.value;
+
+    if (text == 2) {
+        answeredSum = true;
+    }
+
+    if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+      $('#doneExperiment').show();
+    }
+  });
+
+  document.getElementById('purposeGuess').addEventListener('input', function() {
+    var text = this.value;
+
+    if (text.length >= 1) {
+      answeredPurpose = true;
+    }
+    if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+      $('#doneExperiment').show();
+    }
+  });
+
+  document.getElementById('taskGuess').addEventListener('input', function() {
+    var text = this.value;
+
+    if (text.length >= 1) {
+      answeredTask = true;
+    }
+    if(answeredCatch == true && answeredSum == true && answeredTask == true && answeredPurpose == true) {
+      $('#doneExperiment').show();
+    }
+  });
+
+}
+
+function doneExperiment() {
+  $('#questionText').hide();
+	$('#doneText').show();
+  $('#submitButton').show();
+	$("#submitButton").css('visibility','visible');
+  $('.progress').hide();
+	$('#commentBox').show();
+
+  assignExperimentInfo();
+
+}
+
+function assignExperimentInfo() {
+  responses['experimentName'] = experimentName;
+  responses['experimentVersion'] = experimentVersion;
+  responses['experimentTime'] = Math.round((currentTime() - startHITTime) * 10) / 10;
+
+  responses['studyID'] = studyID;
+  responses['sessionID'] = sessionID;
+
+  responses['browserName'] = browserInfo['name'];
+  responses['browserVersion'] = browserInfo['version'];
+  responses['displayWindowHeight'] = $(window).height();
+  responses['displayWindowWidth'] = $(window).width();
+  responses['displayScreenHeight'] = screen.height;
+  responses['displayScreenWidth'] = screen.width;
+
+  responses['saw_gorillas'] = document.querySelector('input[name="saw_gorillas"]:checked').value;
+
+}
+
+function submitData() {
+  responses['purposeGuess'] = document.getElementById('purposeGuess').value;
+  responses['taskGuess'] = document.getElementById('taskGuess').value;
+  responses['commentText'] = document.getElementById('commentBox').value;
+  responses['totalTime'] = Math.round((currentTime() - startHITTime) * 10) / 10;
+  // get data string from response array
+  var dataString = JSON.stringify(responses);
+
+  // post response to server
+
+  $.post("record_data.php",
+         {dataString : dataString, subjectID: subjectID});
+
+
+  $('#redirectToProlific').show();
+  $('#urlProlific').text(urlProlific);
+  $('#countDown').text((finalCountDownClock).toString());
+  redirectTimer = setInterval(countDown, 1000);
+}
+
+function currentTime() {
+  return performance.now();
+
+}
+
+// pads numbers with leading 0s for filenames
+function pad(n) {
+  n = n + '';
+  return n.length >= 4 ? n : new Array(4 - n.length + 1).join(0) + n;
+
+}
+
+function getBrowser() {
+  var ua=navigator.userAgent,tem,M=ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+  if(/trident/i.test(M[1])) {
+    tem=/\brv[ :]+(\d+)/g.exec(ua) || [];
+    return {name:'IE',version:(tem[1]||'')};
+    }
+  if(M[1]==='Chrome') {
+    tem=ua.match(/\bOPR|Edge\/(\d+)/)
+    if(tem!=null) {
+      return {name:'Opera', version:tem[1]};
+      }
+    }
+  M=M[2]? [M[1], M[2]]: [navigator.appName, navigator.appVersion, '-?'];
+  if((tem=ua.match(/version\/(\d+)/i))!=null) {
+    M.splice(1,1,tem[1]);
+  }
+  return {
+    name: M[0],
+    version: M[1]
+  };
+
+}
+
+// randomly shuffle elements of array
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+
+}
+
+function countDown () {
+  finalCountDownClock--;
+  if (finalCountDownClock == 0) {
+    clearInterval(redirectTimer);
+    window.location = urlProlific;
+  } else {
+    $('#countDown').text((finalCountDownClock).toString());
+  }
+}
+
+// get random integer
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// pad numbers
+function pad(n, width=2) {
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join("0") + n;
+}
+
+//preloading
+function preload(trialToLoad) {
+  currImageName = trials[trialToLoad].image;
+  var currImage = new Image();
+  currImage.src = 'stimuli/' + currImageName + '.png';
+  allImages.push(currImage);
+  currImage.onload = function() {
+  };
+}
+
+</script>
+
+<style>
+body {
+  font-family: Helvetica,Arial;
+  font-size: 14pt;
+  height: 100%;
+  margin: 10 auto;
+}
+
+#instructions,#startInstructions,#testInstructions,#consentInstructions {
+	display:block;
+	max-width: 80%;
+	margin: 0 auto;
+	margin-top: 0px;
+  text-align: left;
+}
+
+#trialInstructions {
+	display:block;
+	max-width: 80%;
+	margin: 0 auto;
+	margin-top: 0px;
+  text-align: left;
+  margin-bottom: -1.2em;
+}
+
+#title, #browserCompat {
+  font-size: 18pt;
+  text-align: center;
+  margin: 0 auto;
+}
+canvas {
+  border: 1px solid black;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+input {
+  position: relative;
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#startExperiment, #runTest, #playButton, #purposeButton, #submitDataButton, #doneExperiment, #consentButton {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+	color: black;
+	font-size:14pt;
+	border: 3px outset gray;
+	background-color: #4CAF50;
+	padding: 0px;
+	text-decoration: none;
+	font-weight: bold;
+  position: relative;
+  width: 150px;
+	margin-top:0px;
+	margin-bottom:0px;
+  border-radius: 8px;
+  transition-duration: 0.4s;
+}
+
+#startExperiment:hover, #runTest:hover, #revealImage:hover, #purposeButton:hover, #submitDataButton:hover, #doneExperiment:hover, #consentButton:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+}
+
+#startExperiment:active, #runTest:active, #revealImage:active, #purposeButton:active, #submitDataButton:active, #doneExperiment:active, #consentButton:active {
+	background: gray;
+}
+
+.progress {
+  text-align: center;
+  display: none;
+  height: 15px;
+}
+
+#progressContainer {
+  text-align: center;
+  display: none;
+}
+
+#progressText {
+  font-size: 14pt;
+  color: black;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#progressOutline {
+  display: inline-block;
+  background: white;
+  border: 3px solid black;
+  width: 100px;
+  margin: 5 auto;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+#progressBar {
+  background: #4CAF50;
+  width: 0px;
+  margin-bottom: 10px;
+}
+
+.container {
+  margin: auto;
+}
+
+#container_video {
+  position: absolute;
+  left: 50%;
+  top: 150px;
+  transform: translate(-50%, 150px);
+  margin: auto;
+  color: black;
+  background-color: black;
+  text-align: center;
+}
+
+#container1 {
+  position: absolute;
+  left: 20%;
+  top: 150px;
+  transform: translate(-20%, 150px);
+  margin: auto;
+  color: black;
+  text-align: center;
+}
+
+#container2 {
+  position: absolute;
+  left: 80%;
+  top: 150px;
+  transform: translate(-80%, 150px);
+  margin: auto;
+  color: black;
+  text-align: center;
+}
+
+#testContainer1 {
+  position: absolute;
+  left: 20%;
+  top: 250px;
+  transform: translate(-20%, 250px);
+  margin: auto;
+  color: black;
+  text-align: center;
+}
+
+#testContainer2 {
+  position: absolute;
+  left: 80%;
+  top: 250px;
+  transform: translate(-80%, 250px);
+  margin: auto;
+  color: black;
+  text-align: center;
+}
+
+#doneText, #questionText, #getDemos {
+	display:none;
+	max-width: 500px;
+	text-align:center;
+	margin: 10 auto;
+	padding-bottom:10px;
+	font-size:14pt
+}
+
+#doneText p, #questiontext p, #getDemos p {
+	font-size:12pt
+}
+
+.doneTextStyle, .questionTextStyle, .getDeosStyle {
+  display: none;
+}
+
+#commentBox {
+	display:none;
+}
+
+#submitButton {
+	display:block;
+  width: 100%;
+  margin-top: 500px;
+  margin-bottom: 50px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+img {
+    max-width: 500px;
+    height: auto;
+}
+
+</style>

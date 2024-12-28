@@ -1,0 +1,89 @@
+<html lang=en>
+
+	<head>
+    <title>What is "where"</title>
+		<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="icon" type="image/png" href="logo.svg">
+
+    </head>
+
+    <body>
+        <div id=introText>
+            <h2>What is "where":<br>Physical reasoning informs object location</h2>
+            <p>This webpage contains demonstrations supporting our paper:</p>
+            <p><center>Boger, T. and Ullman, T. D. (2023).<br>What is "where": Physical reasoning informs object location.<br><i>Open Mind</i>, <i>7</i>, 130-140.</center></p>
+						<img src="fig1.png" alt="figure 1 from the paper" width=500 style="display:block; margin:0 auto"/>
+						<p>Below, you will find links to the experiments we performed.</p>
+						<p>For readers, we made an additional experimental 'game', in which you can click on an image (like the main task) and then see how our subjects clicked on it. You can access this page <a href="plot_game.html">here</a>.</p>
+            <ul>
+              <li><strong>Experiment 1</strong>: line drawings, <a href="line_drawings/where.html">main condition ("where")</a> (secondary conditions used for modeling: <a href="line_drawings/mass.html">"center of mass"</a>, <a href="line_drawings/memory.html">"spatial memory"</a>, and <a href="line_drawings/click_anywhere.html">"click anywhere"</a>)</li>
+							<li><strong>Experiment 2</strong>: real objects, <a href="real_objects/where.html">main condition ("where")</a> (secondary conditions used for modeling: <a href="real_objects/mass.html">"center of mass"</a>, <a href="real_objects/memory.html">"spatial memory"</a>, and <a href="real_objects/click_anywhere.html">"click anywhere"</a>)</li>
+							<li><strong>Experiment 3</strong>: masked objects, <a href="masked_objects/where.html">main condition ("where")</a> (secondary conditions used for modeling: <a href="masked_objects/mass.html">"center of mass"</a>, <a href="masked_objects/memory.html">"spatial_memory"</a>, and <a href="masked_objects/click_anywhere.html">"click anywhere"</a>)</li>
+            </ul>
+						<p>(As an additional exploratory model, we tested a "grasping" model using another task in all three experiments. Here is the grasping task for <a href="line_drawings/grasp.html">experiment 1</a>, <a href="real_objects/grasp.html">experiment 2</a>, and <a href="masked_objects/grasp.html">experiment 3</a>)</p>
+						<p>You can find the published version of the paper <a href="https://talboger.github.io/files/BogerUllman_OpenMind_2023.pdf">here</a>.</p>
+						<p>All materials and data supporting our paper are available in an OSF respoitory <a href="https://osf.io/nhj7k/">here</a>.</p>
+						<p>Questions? Email Tal Boger (<a href="mailto:tboger1@jhu.edu">tboger1@jhu.edu</a>) or Tomer Ullman (<a href="mailto:tomerullman@gmail.com">tomerullman@gmail.com</a>) for more information.</p>
+
+        </div>
+    </body>
+
+</html>
+
+<style>
+body {
+    font-family: "Avenir Next", "Helvetica Neue", Helvetica;
+    background-color: white;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+a {
+    font-weight: bold;
+    color: rgb(40,80,240);
+/*    color: rgb(5, 28, 73);*/
+}
+
+p {
+    line-height: 1.5em;
+}
+
+li {
+    line-height: 2em;
+}
+
+
+#introText {
+    display: block;
+    text-align: justify;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 75%;
+    max-width: 925px;
+
+}
+
+#container {
+    display: block;
+    text-align: justify;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 65%;
+    max-width: 800px;
+}
+
+</style>
+
+<script>
+var links = document.links;
+for (var i = 0; i < links.length; i++) {
+     links[i].target = "_blank";
+}
+</script>
